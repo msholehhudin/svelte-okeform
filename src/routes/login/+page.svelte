@@ -2,8 +2,9 @@
 <script lang="ts">
 	import { Button } from "$lib/components/ui/button";
 	import { Input } from "$lib/components/ui/input/index.js";
-  	import { Label } from "$lib/components/ui/label/index.js";
+  import { Label } from "$lib/components/ui/label/index.js";
 	import { Checkbox } from "$lib/components/ui/checkbox";
+  import ImagesLogin from "$lib/assets/images/placeholder.svg"
 
 	  let email = '';
   	let password = '';
@@ -104,7 +105,7 @@
       </div>
     </div>
     <div class="hidden lg:block">
-      <!-- <img src="../assets/placeholder.svg" alt="Image" width="1920" height="1080"
-        class="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale" /> -->
+      <img src={ImagesLogin} alt="LoginImg" width="1920" height="1080"
+        class="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale" />
     </div>
   </div>

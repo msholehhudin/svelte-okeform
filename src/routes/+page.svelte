@@ -1,11 +1,14 @@
 <script lang="ts">
 import { Button } from "$lib/components/ui/button";
+import Sidebar from "$lib/components/sidebar"
 </script>
 
 <svelte:head>
 	<title>Home</title>
 	<meta name="description" content="Svelte demo app" />
 </svelte:head>
+
+<Sidebar />
 
 <section>
     <h1>Welcome to SvelteKit</h1>
