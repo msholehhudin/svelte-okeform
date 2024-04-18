@@ -5,6 +5,11 @@
   import { Label } from "$lib/components/ui/label/index.js";
 	import { Checkbox } from "$lib/components/ui/checkbox";
   import ImagesLogin from "$lib/assets/images/placeholder.svg"
+  import { apiPost } from '$lib/services/api';
+  import { goto } from '$app/navigation';
+  import { userStore } from '$lib/stores/userStore';
+  import { page } from '$app/stores';
+  import axios from "axios";
 
 	  let email = '';
   	let password = '';
@@ -24,22 +29,71 @@
     console.log('ini adalah pass : ', password)
 
 	const invalidForm = isFormInvalid(email, password)
-    // Handle form submission logic here
-    // For example, you can make an API call to authenticate the user
-    // and handle loading state and error messages accordingly
-    // setLoading(true);
-    // authService.login(email, password)
-    //   .then(() => {
-    //     // Redirect to dashboard or perform other actions on successful login
-    //   })
-    //   .catch((error) => {
-    //     setErrMsg(error.message);
-    //   })
-    //   .finally(() => {
-    //     setLoading(false);
-    //   });
+
+  try {
+    const res = await axios.post("https://api.okeform.dev/v1/auth/user/login", {
+      email,
+      password,
+      remember
+    })
+      .then((response) => {
+        // console.log('ini response login : ', response.data.data)
+        const statusCode = response?.status;
+        if(statusCode){
+          userStore.update(user => ({
+                  ...user,
+                  id: response.data.data.id,
+                  name: response.data.data.name,
+                  email: response.data.data.email,
+                }))
+              }
+          goto('/dashboard')
+      })
+
+      // console.log('ini hasil post : ', res)
+      // const res = await apiPost("auth/user/login", {
+      //   email,
+      //   password,
+      //   remember
+      // });
+
+      // if (res.isSuccess) {
+      //   // Assuming user is a writable store
+      //           userStore.update(user => ({
+      //             ...user,
+      //             id: res.data.id,
+      //             name: res.data.name,
+      //             email: res.data.email,
+      //           }))
+
+      //       const unsubscribe = page.subscribe(($page) => {
+      //       const redirectTo = ($page.query as URLSearchParams).get('redirect');
+
+      //       if (typeof redirectTo === "string") {
+      //         goto(redirectTo);
+      //       } else {
+      //         goto("/dashboard");
+      //       }
+
+      //       // Unsubscribe to prevent memory leaks
+      //       unsubscribe();
+
+      //     }
+      //   );
+      // } else {
+      //   errMsg = res.message;
+      //   isLoading = false
+      // }
+      isLoading = false
+    } catch (error) {
+      console.error(error);
+      errMsg = "Something went wrong. Please try again later.";
+      isLoading = false
+    }
+ 
   }
 </script>
+
 <svelte:head>
 	<title>Login</title>
 	<meta name="description" content="Login OkeForm" />
